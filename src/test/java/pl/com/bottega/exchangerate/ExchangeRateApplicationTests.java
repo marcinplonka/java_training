@@ -136,7 +136,7 @@ public class ExchangeRateApplicationTests {
                 contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isUnprocessableEntity()).
                 andExpect(jsonPath("$.errors.from").value("must be different than to")).
-                andExpect(jsonPath("$.errors.to").value("must be different than from"));
+                andExpect(jsonPath("$.errors.to").value("must be different than from"))
         ;
     }
 

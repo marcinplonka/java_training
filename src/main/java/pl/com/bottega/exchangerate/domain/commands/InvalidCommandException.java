@@ -12,5 +12,4 @@ public class InvalidCommandException extends RuntimeException {
 	public Validatable.ValidationErrors getErrors() {
 		return errors;
 	}
-
 }
