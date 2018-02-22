@@ -9,6 +9,13 @@ public class SetExchangeRateCommand implements Validatable {
     private String      currency;
     private BigInteger  rate;
 
+    @Override
+    public void validate(ValidationErrors errors) {
+        validateCurrency(errors, "currency", currency);
+        validateNegativity(errors, "rate", rate);
+        validatePresence(errors, "date", date);
+    }
+
 
     public Date getExchangeRateDate() {
         return date;
@@ -32,13 +39,6 @@ public class SetExchangeRateCommand implements Validatable {
 
     public void setRate(BigInteger rate) {
         this.rate = rate;
-    }
-
-    @Override
-    public void validate(ValidationErrors errors) {
-        validateCurrencyFormat(errors, "currency", currency);
-        validateNegativity(errors, "rate", rate);
-        validatePresence(errors, "date", date);
     }
 
 

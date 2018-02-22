@@ -2,9 +2,10 @@ package pl.com.bottega.exchangerate.domain.commands;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public interface Validatable {
-    Integer DEFAULT_CURRENCY_LENGTH = 3;
+    final String THREE_UPPERCASE_LETTERS_REGEX = "^[A-Z]{3}$";
 
 
     void validate(ValidationErrors errors);
@@ -28,22 +29,29 @@ public interface Validatable {
             return new HashMap<>(errors);
         }
 
+        public boolean any() {
+            return !errors.isEmpty();
+        }
     }
 
     default boolean isEmpty(String s) {
         return s == null || s.trim().length() == 0;
     }
 
-    default void validateCurrencyFormat(ValidationErrors errors, String field, String currency) {
-        boolean isUpperCase = currency.codePoints().mapToObj(c -> (char) c).allMatch(Character::isUpperCase);
-        if (!isUpperCase || currency.length() != DEFAULT_CURRENCY_LENGTH) {
-            errors.add(field, "has invalid format");
-            throw new InvalidCommandException(errors);
+    default void validateCurrency(ValidationErrors errors, String field, String currency) {
+        if (currency == null) {
+            errors.add(field, "can't be blank");
+        } else {
+
+
+            if (!Pattern.compile(THREE_UPPERCASE_LETTERS_REGEX).matcher(currency).matches()) {
+                errors.add(field, "has invalid format");
+            }
         }
     }
 
     default void validateNegativity(ValidationErrors errors, String field, BigInteger rate) {
-        if(rate.compareTo(BigInteger.ZERO) <= 0) {
+        if (rate.compareTo(BigInteger.ZERO) <= 0) {
             errors.add(field, "must be > than 0.0");
         }
     }
