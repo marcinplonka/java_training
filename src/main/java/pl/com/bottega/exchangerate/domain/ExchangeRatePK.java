@@ -1,5 +1,7 @@
 package pl.com.bottega.exchangerate.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.sql.Date;
@@ -7,8 +9,9 @@ import java.util.Objects;
 
 @Embeddable
 public class ExchangeRatePK implements Serializable {
-    protected String currency;
-    protected Date date;
+    private String currency;
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    private Date date;
 
     public ExchangeRatePK() {}
 

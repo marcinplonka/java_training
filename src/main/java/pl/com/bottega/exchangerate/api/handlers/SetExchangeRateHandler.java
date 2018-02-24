@@ -1,6 +1,9 @@
 package pl.com.bottega.exchangerate.api.handlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import pl.com.bottega.exchangerate.domain.ExchangeRate;
+import pl.com.bottega.exchangerate.domain.commands.Command;
 import pl.com.bottega.exchangerate.domain.commands.InvalidCommandException;
 import pl.com.bottega.exchangerate.domain.commands.SetExchangeRateCommand;
 import pl.com.bottega.exchangerate.domain.commands.Validatable;
@@ -16,14 +19,15 @@ public class SetExchangeRateHandler implements Handler<SetExchangeRateCommand, V
     }
 
     @Override
+    @Transactional
     public Void handle(SetExchangeRateCommand command) {
-            throw new InvalidCommandException(new Validatable.ValidationErrors());
 
-        //TODO
+        exchangeRateRepository.save(new ExchangeRate(command));
+        return null;
     }
 
     @Override
-    public Class<? extends Validatable> getSupportedCommandClass() {
+    public Class<? extends Command> getSupportedCommandClass() {
         return SetExchangeRateCommand.class;
     }
 }

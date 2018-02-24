@@ -34,21 +34,21 @@ public class ExchangeRateApplicationTests {
 
     @Before
     public void cleanDb() {
-        dbCleaner.clean();
+//       dbCleaner.clean();
     }
 
     @Test
     public void exchangeFromMainCurrency() throws Exception {
-        saveExchangeRate("2017-01-01", "USD", 3.5);
+        saveExchangeRate("2017/01/01", "USD", 3.5);
 
         mvc.perform(get("/calculation").
-                param("date", "2017-01-01").
+                param("date", "2017/01/01").
                 param("from", "PLN").
                 param("to", "USD").
                 param("amount", "100").
                 contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk()).
-                andExpect(jsonPath("$.date").value("2017-01-01")).
+                andExpect(jsonPath("$.date").value("2017/01/01")).
                 andExpect(jsonPath("$.from").value("PLN")).
                 andExpect(jsonPath("$.to").value("USD")).
                 andExpect(jsonPath("$.amount").value(100.0)).

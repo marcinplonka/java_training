@@ -1,15 +1,15 @@
 package pl.com.bottega.exchangerate.api.handlers;
 
-import pl.com.bottega.exchangerate.domain.commands.Validatable;
+import pl.com.bottega.exchangerate.domain.commands.Command;
 
-public interface Handler<C extends Validatable,R> {
+public interface Handler<C extends Command,R> {
 
     R handle(C command);
 
 
-    Class<? extends Validatable> getSupportedCommandClass();
+    Class<? extends Command> getSupportedCommandClass();
 
-    default boolean canHandle(Validatable command){
+    default boolean canHandle(Command command){
         return command.getClass().equals(getSupportedCommandClass());
     }
 

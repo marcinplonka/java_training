@@ -1,15 +1,21 @@
 package pl.com.bottega.exchangerate.domain.commands;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.time.LocalDate;
 
-public class CalculationCommand implements Validatable {
+public class ExchangeCurrencyCommand implements Validatable, Command {
     private String from;
     private String to;
-    private BigInteger amount;
+    private BigDecimal amount;
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDate date;
 
-    public CalculationCommand(String from, String to, BigInteger amount, LocalDate date) {
+    public ExchangeCurrencyCommand(String from, String to, BigDecimal amount, LocalDate date) {
+
         this.from = from;
         this.to = to;
         this.amount = amount;
@@ -20,15 +26,16 @@ public class CalculationCommand implements Validatable {
     public void validate(ValidationErrors errors) {
         validateCurrency(errors, "from", from);
         validateCurrency(errors, "to", to);
+        validateNotEqualCurrencies(errors, "from",from, "to", to);
         validateNegativity(errors, "amount", amount);
         validatePresence(errors, "date", date);
     }
 
-    public BigInteger getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

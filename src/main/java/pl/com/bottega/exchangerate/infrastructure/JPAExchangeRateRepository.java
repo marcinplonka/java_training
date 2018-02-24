@@ -7,6 +7,7 @@ import pl.com.bottega.exchangerate.domain.repositories.ExchangeRateRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 
 @Component
@@ -17,13 +18,13 @@ public class JPAExchangeRateRepository implements ExchangeRateRepository {
 
 
     @Override
-    public ExchangeRate get(ExchangeRatePK exchangeRatePK) {
-        return entityManager.find(ExchangeRate.class, exchangeRatePK);
+    public  Optional<ExchangeRate> get(ExchangeRatePK exchangeRatePK) {
+        return Optional.ofNullable(entityManager.find(ExchangeRate.class, exchangeRatePK));
     }
 
     @Override
     @Transactional
     public void save(ExchangeRate exchangeRate) {
-        entityManager.persist(exchangeRate);
+        entityManager.merge(exchangeRate);
     }
 }
